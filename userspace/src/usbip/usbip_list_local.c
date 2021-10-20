@@ -119,7 +119,7 @@ walker_list(HDEVINFO dev_info, PSP_DEVINFO_DATA pdev_info_data, devno_t devno, v
 		return 0;
 	}
 
-	add_usbdev(usbdev_list, id_hw, devno);
+	add_usbdev(usbdev_list, id_hw, devno);  // 把遍历出来的设备信息增加到 usbdev_list 结构体中。
 
 	free(id_hw);
 	return 0;
@@ -134,7 +134,7 @@ usbip_list_usbdevs(void)
 	if (usbdev_list == NULL)
 		return NULL;
 
-	traverse_usbdevs(walker_list, TRUE, usbdev_list);
+	traverse_usbdevs(walker_list, TRUE, usbdev_list);  // 调用 windows api 遍历所有 usb 设备。
 
 	return usbdev_list;
 }
@@ -154,14 +154,14 @@ int list_devices(BOOL parsable)
 	usbdev_list_t	*usbdev_list;
 	int	i;
 
-	usbdev_list = usbip_list_usbdevs();
+	usbdev_list = usbip_list_usbdevs();  // 获取所有 usb 设备
 	if (usbdev_list == NULL) {
 		err("out of memory");
 		return 2;
 	}
 
 	for (i = 0; i < usbdev_list->n_usbdevs; i++) {
-		list_device(usbdev_list->usbdevs + i, parsable);
+		list_device(usbdev_list->usbdevs + i, parsable);  // 循环输出到控制台
 	}
 	usbip_free_usbdev_list(usbdev_list);
 	return 0;

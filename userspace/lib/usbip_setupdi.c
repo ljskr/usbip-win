@@ -209,7 +209,7 @@ traverse_dev_info(HDEVINFO dev_info, walkfunc_t walker, void *ctx)
 		char	*id_inst;
 		devno_t	devno;
 
-		if (!SetupDiEnumDeviceInfo(dev_info, idx, &dev_info_data)) {
+		if (!SetupDiEnumDeviceInfo(dev_info, idx, &dev_info_data)) {  // 循环调用 SetupDiEnumDeviceInfo 来获取每一个设备的具体信息
 			DWORD	err = GetLastError();
 
 			if (err != ERROR_NO_MORE_ITEMS) {
@@ -241,7 +241,7 @@ traverse_usbdevs(walkfunc_t walker, BOOL present_only, void *ctx)
 
 	if (present_only)
 		flags |= DIGCF_PRESENT;
-	dev_info = SetupDiGetClassDevs(NULL, "USB", NULL, flags);
+	dev_info = SetupDiGetClassDevs(NULL, "USB", NULL, flags);  // 调用 windows api SetupDiGetClassDevs 来获取设备信息句柄
 	if (dev_info == INVALID_HANDLE_VALUE) {
 		dbg("SetupDiGetClassDevs failed: 0x%lx", GetLastError());
 		return ERR_GENERAL;

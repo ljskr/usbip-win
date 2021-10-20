@@ -40,9 +40,9 @@ walker_bind(HDEVINFO dev_info, PSP_DEVINFO_DATA pdev_info_data, devno_t devno, v
 	if (devno == *pdevno) {
 		int	ret;
 
-		ret = attach_stub_driver(devno);
+		ret = attach_stub_driver(devno);    // 把设备的驱动换成 stub 驱动。
 		if (ret == 0) {
-			if (!restart_device(dev_info, pdev_info_data))
+			if (!restart_device(dev_info, pdev_info_data))    // 重置设备。
 				return ERR_DRIVER;
 			return 1;
 		}
@@ -57,7 +57,7 @@ bind_device(const char *busid)
 	unsigned char	devno;
 	int	rc;
 
-	devno = get_devno_from_busid(busid);
+	devno = get_devno_from_busid(busid);    // 解析 bus-id ，格式为 1-xxx，获取到后面的 xxx 。
 	if (devno == 0) {
 		err("invalid bus id: %s", busid);
 		return 1;

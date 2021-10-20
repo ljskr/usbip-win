@@ -70,6 +70,7 @@ get_module_dir(void)
 		path_mod = (char *)malloc(size);
 		if (path_mod == NULL)
 			return NULL;
+		// GetModuleFileName: 获取当前执行的exe文件的绝对路径
 		if (GetModuleFileName(NULL, path_mod, size) == size) {
 			free(path_mod);
 			if (GetLastError() != ERROR_INSUFFICIENT_BUFFER)
@@ -77,6 +78,7 @@ get_module_dir(void)
 			size += 1024;
 		}
 		else {
+			// 从右边查找第一个\\字符，并把它改成0，因此得到当前执行文件所在的文件夹。
 			char	*last_sep;
 			last_sep = strrchr(path_mod, '\\');
 			if (last_sep != NULL)

@@ -39,10 +39,10 @@ walker_unbind(HDEVINFO dev_info, PSP_DEVINFO_DATA pdev_info_data, devno_t devno,
 	if (devno == *pdevno) {
 		int	ret;
 
-		ret = detach_stub_driver(devno);
+		ret = detach_stub_driver(devno);    // 把设备的驱动进行回滚。（容易出错，需要重点关注）
 		switch (ret) {
 		case 0:
-			if (!restart_device(dev_info, pdev_info_data))
+			if (!restart_device(dev_info, pdev_info_data))    // 重置设备
 				return ERR_DRIVER;
 			return 1;
 		case ERR_NOTEXIST:
@@ -64,7 +64,7 @@ static int unbind_device(char *busid)
 		err("invalid bus id: %s", busid);
 		return 1;
 	}
-	rc = traverse_usbdevs(walker_unbind, TRUE, (void *)&devno);
+	rc = traverse_usbdevs(walker_unbind, TRUE, (void *)&devno);    // 遍历 usb 设备，并调用 walker 回调。
 	if (rc != 1) {
 		switch (rc) {
 		case 0:

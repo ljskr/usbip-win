@@ -119,11 +119,11 @@ int usbip_names_init(void)
 	char	*fpath_db, *fpath_mod;
 	int	ret;
 
-	fpath_mod = get_module_dir();
-	asprintf(&fpath_db, "%s\\usb.ids", fpath_mod);
+	fpath_mod = get_module_dir();    // 获取当前目录
+	asprintf(&fpath_db, "%s\\usb.ids", fpath_mod);  // 得到当前目录下的 usb.ids 文件
 	free(fpath_mod);
 
-	ret = names_init(fpath_db);
+	ret = names_init(fpath_db);      // 解析 usb.ids 文件，生成几个 hash 表
 	free(fpath_db);
 
 	return ret;

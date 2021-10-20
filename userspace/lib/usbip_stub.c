@@ -89,7 +89,7 @@ copy_stub_inf(const char *id_hw, const char *path_drvpkg)
 		return;
 	}
 
-	translate_inf(id_hw, in, out);
+	translate_inf(id_hw, in, out);    // 把 usbip_stub.inx 写到临时目录中，改名为 usbip_stub.inf ，并把 hw_id 替换为当前设备的 hw_id 。
 	fclose(in);
 	fclose(out);
 }
@@ -148,21 +148,21 @@ apply_stub_fdo(HDEVINFO dev_info, PSP_DEVINFO_DATA pdev_info_data)
 	id_hw = get_id_hw(dev_info, pdev_info_data);
 	if (id_hw == NULL)
 		return ERR_GENERAL;
-	if (!get_temp_drvpkg_path(path_drvpkg)) {
+	if (!get_temp_drvpkg_path(path_drvpkg)) {    // 获取一个临时目录
 		free(id_hw);
 		return ERR_GENERAL;
 	}
-	copy_file("usbip_stub.sys", path_drvpkg);
-	copy_stub_inf(id_hw, path_drvpkg);
+	copy_file("usbip_stub.sys", path_drvpkg);    // 把 usbip_stub.sys 文件拷贝到临时目录中
+	copy_stub_inf(id_hw, path_drvpkg);    // 把 usbip_stub.inx 写到临时目录中，改名为 usbip_stub.inf ，并把 hw_id 替换为当前设备的 hw_id 。
 
-	if (!build_cat(path_drvpkg, "usbip_stub.cat", id_hw)) {
+	if (!build_cat(path_drvpkg, "usbip_stub.cat", id_hw)) {    // 创建 usbip_stub.cat 文件。没有模板，直接写文件。实现代码位于 usbip_common 的 usbip_pki_cat.c 中。
 		remove_dir_all(path_drvpkg);
 		free(id_hw);
 		return ERR_GENERAL;
 	}
 
 	asprintf(&path_cat, "%s\\usbip_stub.cat", path_drvpkg);
-	if ((ret = sign_file("USBIP Test", path_cat)) < 0) {
+	if ((ret = sign_file("USBIP Test", path_cat)) < 0) {    // 对上面创建 usbip_stub.cat 文件进行签名。
 		remove_dir_all(path_drvpkg);
 		free(path_cat);
 		free(id_hw);
@@ -175,7 +175,7 @@ apply_stub_fdo(HDEVINFO dev_info, PSP_DEVINFO_DATA pdev_info_data)
 
 	/* update driver */
 	asprintf(&path_inf, "%s\\usbip_stub.inf", path_drvpkg);
-	if (!UpdateDriverForPlugAndPlayDevicesA(NULL, id_hw, path_inf, INSTALLFLAG_NONINTERACTIVE | INSTALLFLAG_FORCE, &reboot_required)) {
+	if (!UpdateDriverForPlugAndPlayDevicesA(NULL, id_hw, path_inf, INSTALLFLAG_NONINTERACTIVE | INSTALLFLAG_FORCE, &reboot_required)) {    // 调用 windows api 进行更新驱动。
 		DWORD	err = GetLastError();
 		dbg("failed to update driver %s ; %s ; errorcode: 0x%lx", path_inf, id_hw, err);
 		free(path_inf);
@@ -200,7 +200,7 @@ rollback_driver(HDEVINFO dev_info, PSP_DEVINFO_DATA pdev_info_data)
 {
 	BOOL	needReboot;
 
-	if (!DiRollbackDriver(dev_info, pdev_info_data, NULL, ROLLBACK_FLAG_NO_UI, &needReboot)) {
+	if (!DiRollbackDriver(dev_info, pdev_info_data, NULL, ROLLBACK_FLAG_NO_UI, &needReboot)) {    // 调用 windows api 进行回滚驱动。（经常遇到回滚有问题，需要重点关注）
 		dbg("failed to rollback driver: %lx", GetLastError());
 		return FALSE;
 	}
