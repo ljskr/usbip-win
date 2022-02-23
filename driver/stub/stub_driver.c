@@ -18,11 +18,12 @@
 
 #include "stub_driver.h"
 #include "stub_dbg.h"
+#include "stub_dispatch.h"
 #include "stub_dev.h"
 
-NTSTATUS stub_add_device(PDRIVER_OBJECT drvobj, PDEVICE_OBJECT pdo);
-NTSTATUS stub_dispatch(PDEVICE_OBJECT devobj, IRP *irp);
-
+/*
+* 驱动卸载方法
+*/
 static VOID
 stub_unload(DRIVER_OBJECT *drvobj)
 {
@@ -31,7 +32,9 @@ stub_unload(DRIVER_OBJECT *drvobj)
 	DBGI(DBG_DISPATCH, "unload\n");
 }
 
-// 驱动入口
+/*
+* 驱动加载入口
+*/
 NTSTATUS
 DriverEntry(DRIVER_OBJECT *drvobj, UNICODE_STRING *regpath)
 {

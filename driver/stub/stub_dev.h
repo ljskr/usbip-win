@@ -51,3 +51,5 @@ void unlock_dev_removal(usbip_stub_dev_t *devstub);
 void unlock_wait_dev_removal(usbip_stub_dev_t *devstub);
 
 void remove_devlink(usbip_stub_dev_t *devstub);
+
+NTSTATUS stub_add_device(PDRIVER_OBJECT drvobj, PDEVICE_OBJECT pdo);

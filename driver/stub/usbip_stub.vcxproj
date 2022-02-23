@@ -41,6 +41,7 @@
     <ClInclude Include="stub_dbg.h" />
     <ClInclude Include="stub_dev.h" />
     <ClInclude Include="stub_devconf.h" />
+    <ClInclude Include="stub_dispatch.h" />
     <ClInclude Include="stub_driver.h" />
     <ClInclude Include="stub_irp.h" />
     <ClInclude Include="stub_reg.h" />

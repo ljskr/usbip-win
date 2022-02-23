@@ -16,15 +16,10 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "stub_driver.h"
 #include "stub_dbg.h"
+#include "stub_dispatch.h"
 #include "stub_irp.h"
 
-NTSTATUS stub_dispatch_pnp(usbip_stub_dev_t *devstub, IRP *irp);
-NTSTATUS stub_dispatch_power(usbip_stub_dev_t *devstub, IRP *irp);
-NTSTATUS stub_dispatch_ioctl(usbip_stub_dev_t *devstub, IRP *irp);
-NTSTATUS stub_dispatch_read(usbip_stub_dev_t *devstub, IRP *irp);
-NTSTATUS stub_dispatch_write(usbip_stub_dev_t *devstub, IRP *irp);
 
 NTSTATUS
 stub_dispatch(PDEVICE_OBJECT devobj, IRP *irp)
