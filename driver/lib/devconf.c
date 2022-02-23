@@ -1,16 +1,18 @@
-#include "devconf.h"
+﻿#include "devconf.h"
 
 #include <usbdlib.h>
 
 PUSB_INTERFACE_DESCRIPTOR
 dsc_find_first_intf(PUSB_CONFIGURATION_DESCRIPTOR dsc_conf)
 {
+	// 获取 usb 描述信息接口。
 	return (PUSB_INTERFACE_DESCRIPTOR)USBD_ParseDescriptors(dsc_conf, dsc_conf->wTotalLength, dsc_conf, USB_INTERFACE_DESCRIPTOR_TYPE);
 }
 
 PUSB_INTERFACE_DESCRIPTOR
 dsc_find_intf(PUSB_CONFIGURATION_DESCRIPTOR dsc_conf, UCHAR intf_num, USHORT alt_setting)
 {
+	// 获取 usb 描述信息接口。
 	return USBD_ParseConfigurationDescriptorEx(dsc_conf, dsc_conf, intf_num, alt_setting, -1, -1, -1);
 }
 
@@ -35,6 +37,7 @@ intf_has_matched_ep(PUSB_CONFIGURATION_DESCRIPTOR dsc_conf, PUSB_INTERFACE_DESCR
 	return FALSE;
 }
 
+// 通过端点(Ednpoint)描述符查找接口描述符
 PUSB_INTERFACE_DESCRIPTOR
 dsc_find_intf_by_ep(PUSB_CONFIGURATION_DESCRIPTOR dsc_conf, PUSB_ENDPOINT_DESCRIPTOR dsc_ep)
 {
@@ -53,6 +56,7 @@ dsc_find_intf_by_ep(PUSB_CONFIGURATION_DESCRIPTOR dsc_conf, PUSB_ENDPOINT_DESCRI
 	return NULL;
 }
 
+// 通过接口描述符查找端点描述符
 PUSB_ENDPOINT_DESCRIPTOR
 dsc_find_intf_ep(PUSB_CONFIGURATION_DESCRIPTOR dsc_conf, PUSB_INTERFACE_DESCRIPTOR dsc_intf, UCHAR epaddr)
 {

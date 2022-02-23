@@ -1,4 +1,4 @@
-/* libusb-win32, Generic Windows USB Library
+﻿/* libusb-win32, Generic Windows USB Library
  * Copyright (c) 2002-2005 Stephan Meyer <ste_meyer@web.de>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -31,6 +31,7 @@ stub_unload(DRIVER_OBJECT *drvobj)
 	DBGI(DBG_DISPATCH, "unload\n");
 }
 
+// 驱动入口
 NTSTATUS
 DriverEntry(DRIVER_OBJECT *drvobj, UNICODE_STRING *regpath)
 {
@@ -42,11 +43,11 @@ DriverEntry(DRIVER_OBJECT *drvobj, UNICODE_STRING *regpath)
 
 	/* initialize the driver object's dispatch table */
 	for (i = 0; i <= IRP_MJ_MAXIMUM_FUNCTION; i++) {
-		drvobj->MajorFunction[i] = stub_dispatch;
+		drvobj->MajorFunction[i] = stub_dispatch;  // 改写所有的分发指针，都使用自定义的stub_dispath方法
 	}
 
-	drvobj->DriverExtension->AddDevice = stub_add_device;
-	drvobj->DriverUnload = stub_unload;
+	drvobj->DriverExtension->AddDevice = stub_add_device;  // 有新设备时，调用 stub_add_device 方法
+	drvobj->DriverUnload = stub_unload;   // 设备断开时，调用 stub_unload 方法
 
 	return STATUS_SUCCESS;
 }
